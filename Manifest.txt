@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/xdt
+lib/xdt.rb
+test/test_xdt.rb
