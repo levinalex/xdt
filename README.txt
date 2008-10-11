@@ -1,32 +1,32 @@
 = xdt
 
-* FIX (url)
+* http://levinalex.net/src/xdt
 
 == DESCRIPTION:
 
-FIX (describe your package)
+xDT is a library that reads and writes LDT, GDT and BDT data.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* none
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  no code yet
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* none
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install levinalex-xdt
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2008 Levin Alexander
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
