@@ -10,10 +10,9 @@ describe "an XDT record with an ID and some data" do
   end
 end
 
-
 describe "creating a XDT block" do
   before do
-    @block = Xdt::Block.new("0020") do |b|
+    @block = Xdt::Section.new("0020") do |b|
       b.field "9105", "123"
     end
   end

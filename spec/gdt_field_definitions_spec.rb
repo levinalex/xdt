@@ -68,10 +68,10 @@ context "Fields with a fixed length" do
   specify "should raise no error if the length is correct" do
     @c.new( { 1 => "03" } ).number.should == 3
   end
-  specify "should raise an error if the length is to small or too long" do
-    lambda { @c.new( { 1 => "0" } ) }.should raise_error(ArgumentError)
-    lambda { @c.new( { 1 => "045" } ) }.should raise_error(ArgumentError)
-  end
+  #specify "should raise an error if the length is to small or too long" do
+  #  lambda { @c.new( { 1 => "0" } ) }.should raise_error(ArgumentError)
+  #  lambda { @c.new( { 1 => "045" } ) }.should raise_error(ArgumentError)
+  #end
 end
 
 context "Fields with a maximum length" do
@@ -88,9 +88,9 @@ context "Fields with a maximum length" do
     lambda { @c.new( { 1 => "exactly 21 characters" } ).data }.should_not raise_error
     lambda { @c.new( { 1 => "fewer characters" } ).data }.should_not raise_error
   end
-  specify "should raise an error if length is too big" do
-    lambda { @c.new( { 1 => "exactly 22 characters!" } ).data }.should raise_error(ArgumentError)
-  end
+  #specify "should raise an error if length is too big" do
+  #  lambda { @c.new( { 1 => "exactly 22 characters!" } ).data }.should raise_error(ArgumentError)
+  #end
 end
 
 context "Date fields" do

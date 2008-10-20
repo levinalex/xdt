@@ -1,3 +1,9 @@
-class Xdt
-  VERSION = '1.0.0'
+$LOAD_PATH.unshift File.dirname(__FILE__)
+
+require 'xdt/markup'
+require 'xdt/ldt'
+
+module Xdt
+  VERSION = '1.0.1'
+  
 end

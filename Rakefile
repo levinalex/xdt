@@ -1,6 +1,8 @@
+$LOAD_PATH.unshift './lib'
+
 require 'rubygems'
 require 'hoe'
-require './lib/xdt.rb'
+require 'xdt'
 require 'spec/rake/spectask'
 
 Hoe.new('xdt', Xdt::VERSION) do |p|
