@@ -8,11 +8,11 @@ describe "creating an LG-report" do
         s.field("8302", "10062008") # Berichtsdatum
         s.field("3000", "98") # PAT-ID (Nospec)
         s.field("3103", "10111982") # Geburtsdatum des Pat
-        s.field("8401", "??") # Befundart
+        s.field("8401", "E") # Befundart
 
         s.field("8410", "TPO") # Test-Ident
         s.field("8411", "ANTITPO") # Testbezeichnung
-        # s.field("8418", "F") # Tststatus (Fehlt, Korrigiert, Berichtigt)
+        s.field("8418", "K") # Tststatus (Fehlt, Korrigiert, Berichtigt)
         s.field("8420", "12.4")
         s.field("8421", "U/l") # Einkeit
         s.field("8480", "Ergebnistext") # Ergebnistext
