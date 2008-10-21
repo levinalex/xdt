@@ -4,7 +4,6 @@ Manifest.txt
 README.txt
 Rakefile
 bin/gdt2http
-foo.ldt
 lib/gdt/field_definitions.rb
 lib/gdt/field_handling.rb
 lib/gdt/parser.rb
