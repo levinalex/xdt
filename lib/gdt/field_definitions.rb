@@ -25,5 +25,11 @@ module Gdt
 
     field 9218, :gdt_version, "Version GDT", 5
 
+
+    # bogus fields to suppress errors
+    field 9901, :unknown, "unknown", (0..60), :alnum
+    field 8402, :unknown, "unknown", (0..60), :alnum
+    
+
   end
 end
