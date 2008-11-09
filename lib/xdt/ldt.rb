@@ -26,7 +26,7 @@ module Xdt
       # only write the file if it contains any sections
       #
       def write_file(filename)
-        return false if @sections.empty?
+        return false unless @sections.length > 2
         
         File.open(filename, "w+") do |f|
           f.write self.to_s
