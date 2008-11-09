@@ -19,10 +19,22 @@ require 'xdt/markup'
 module Xdt
   module Ldt
     module Package
-      
     end
     
     class LGReport
+      
+      # only write the file if it contains any sections
+      #
+      def write_file(filename)
+        return false if @sections.empty?
+        
+        File.open(filename, "w+") do |f|
+          f.write self.to_s
+        end
+        
+        return true
+      end
+      
       def section(id, &blk)
         @sections << Xdt::Section.new(id, &blk)
       end
@@ -43,9 +55,9 @@ module Xdt
           s.field("8312", "1") # Kundennummer
           s.field("9103", Date.today.strftime("%D%M%Y"))
         end
-        
+
         yield self if block_given?
-        
+
         section("8221") do |s|
           overhead = 44
           s.field("9202", (length + overhead).to_s.rjust(8,"0"))
