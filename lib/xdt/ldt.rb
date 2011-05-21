@@ -20,28 +20,28 @@ module Xdt
   module Ldt
     module Package
     end
-    
+
     class LGReport
-      
+
       # only write the file if it contains any sections
       #
       def write_file(filename)
         return false unless @sections.length > 2
-        
+
         File.open(filename, "w+") do |f|
           f.write self.to_s
         end
-        
+
         return true
       end
-      
+
       def section(id, &blk)
         @sections << Xdt::Section.new(id, &blk)
       end
-      
+
       def initialize
         @sections = []
-        
+
         section("8220") do |s|
           s.field("9211", "07/99")
           # s.field("0201", "") # Arztnummer
@@ -68,11 +68,10 @@ module Xdt
       def length
         @sections.inject(0) { |sum, section| sum + section.length }
       end
-      
+
       def to_s
         @sections.map { |pkg| pkg.to_s }.join
       end
-      
     end
   end
 end

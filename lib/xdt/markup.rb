@@ -5,3 +5,4 @@ module Xdt
   class Package
   end
 end
+
