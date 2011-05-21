@@ -1,5 +1,5 @@
 context "Valid GDT tokens" do
-  setup do
+  before do
     @line = "01380006301\r\n"
   end
 
@@ -13,7 +13,7 @@ context "Valid GDT tokens" do
 
   specify "parser should ignore empty lines" do
     result = nil
-    lambda { result = Gdt::Parser.parse(" \r\n\r\n ") }.should_not raise_error  
+    lambda { result = Gdt::Parser.parse(" \r\n\r\n ") }.should_not raise_error
     result.should == {}
   end
 end
@@ -29,7 +29,7 @@ context "Malformed data" do
 end
 
 context "a valid Gdt file from Quincy PCNet" do
-  setup do
+  before do
     @gdt_data = File.read(File.dirname(__FILE__) + '/examples/BARCQPCN.001')
   end
 
@@ -46,5 +46,5 @@ context "a valid Gdt file from Quincy PCNet" do
       gdt[3000] == "98" && gdt[8000] == "6301" && gdt[3101] == "Sierra"
     }
   end
-  
+
 end

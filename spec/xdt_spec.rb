@@ -16,7 +16,7 @@ describe "creating a XDT block" do
       b.field "9105", "123"
     end
   end
-  
+
   it "should have a string representation where the length field exists and has the correct value" do
     @block.to_s.should == "01380000020\r\n014810000039\r\n0129105123\r\n"
   end

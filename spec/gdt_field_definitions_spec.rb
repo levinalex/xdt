@@ -1,5 +1,5 @@
 context "Gdt field ids should map to names" do
-  field_names = { 
+  field_names = {
     # 0102
     # 0103
     # 0132
@@ -25,7 +25,7 @@ context "Gdt field ids should map to names" do
 
     9218 => :gdt_version
   }
-    
+
   field_names.each do |id, name|
     specify("#{id.to_s} => #{name.inspect}") do
       Gdt::GdtFields.lookup(id).should == name
@@ -34,10 +34,10 @@ context "Gdt field ids should map to names" do
 end
 
 context "Parsing a Hash with Gdt-Data" do
-  setup do
+  before do
     @parsed_data = Gdt::GdtFields.new( { 3000 => "98", 3101 => "Sierra", 3110 => "2" } )
   end
-  
+
   specify "should convert field IDs to names" do
     @parsed_data.last_name.should == "Sierra"
     @parsed_data.nr.should == "98"
@@ -48,7 +48,7 @@ context "Parsing a Hash with Gdt-Data" do
 end
 
 context "Unknown field IDs" do
-  setup do
+  before do
     @c = Class.new(Gdt::AbstractField) do |c|
       # no fields are defined
     end
@@ -59,12 +59,12 @@ context "Unknown field IDs" do
 end
 
 context "Fields with a fixed length" do
-  setup do
+  before do
     @c = Class.new(Gdt::AbstractField) do |c|
       c.field 1, :number, "some number", 2, :num
     end
   end
-  
+
   specify "should raise no error if the length is correct" do
     @c.new( { 1 => "03" } ).number.should == 3
   end
@@ -75,7 +75,7 @@ context "Fields with a fixed length" do
 end
 
 context "Fields with a maximum length" do
-  setup do
+  before do
     @c = Class.new(Gdt::AbstractField) do |c|
       c.field 1, :data, "a string", (0..21), :alnum
     end
@@ -94,12 +94,12 @@ context "Fields with a maximum length" do
 end
 
 context "Date fields" do
-  setup do
+  before do
     @c = Class.new(Gdt::AbstractField) do |c|
       c.field 1, :data, "a date field", 8, :datum
     end
   end
-  
+
   specify "should return an instance of the Date class" do
     @c.new( { 1 => "31011994" }).data.should == Date.parse("1994-01-31")
   end
