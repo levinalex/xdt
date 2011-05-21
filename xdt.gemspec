@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
+require 'xdt'
 
 Gem::Specification.new do |s|
   s.name = "xdt"
   s.version = "1.1.0"
+  s.version = Xdt::VERSION
 
   s.authors = ["Levin Alexander"]
   s.email = ["mail@levinalex.net"]

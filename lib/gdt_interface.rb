@@ -5,8 +5,6 @@ require File.join(GDT_ROOT, 'gdt', 'field_definitions.rb')
 
 
 module Gdt
-  VERSION = '0.0.8'
-
   class Gdt
     def initialize(string)
       @data = GdtFields.new( Parser.parse(string))
