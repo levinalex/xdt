@@ -13,10 +13,10 @@ module Xdt
     end
 
     def self.parse(string)
+      string = string.force_encoding("cp437").encode("utf-8")
       string = string.gsub!("\r\n","\n") # normalize line endings
       new(string, nil).to_hash
     end
-
   end
-
 end
+

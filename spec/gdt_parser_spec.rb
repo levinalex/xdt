@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 context "Valid GDT tokens" do
   before do
     @line = "01380006301\r\n"
@@ -33,8 +35,25 @@ context "a valid Gdt file from Quincy PCNet" do
   end
 
   specify "should contain correct data" do
+    expected = { 8000 => "6301",
+                 8100 => "00228",
+                 8315 => "Barcode",
+                 8316 => "QPCnet",
+                 9218 => "02.00",
+                 3000 => "98",
+                 3101 => "Sierra",
+                 3102 => "Rudolph",
+                 3103 => "13041928",
+                 3105 => "123 130328",
+                 3106 => "4000 Düsseldorf 12",
+                 3107 => "Richard-Wagner-Str. 11",
+                 3108 => "3",
+                 3110 => "1" }
+
     Xdt::Parser.parse(@gdt_data).should satisfy { |gdt|
       gdt[3000] == "98" && gdt[8000] == "6301" && gdt[3101] == "Sierra"
+
+      gdt.should == expected
     }
   end
 
