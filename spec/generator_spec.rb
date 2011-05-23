@@ -1,3 +1,5 @@
+# encoding: utf-8
+#
 require 'xdt'
 
 describe "an XDT record with an ID and some data" do
@@ -8,8 +10,13 @@ describe "an XDT record with an ID and some data" do
   it "should have a string representation that includes length and ends in CR LF" do
     @field.to_s.should == "01380008221\r\n"
   end
-end
 
+  it "should replace invalid characters" do
+    field = Xdt::Generator::Field.new("8000", "Челло Iñtërnâtiônàlizætiøn")
+    field.to_s.encoding.should == Encoding.find("iso-8859-1")
+    field.to_s.encode("utf-8").to_s.should == "0358000????? Iñtërnâtiônàlizætiøn\r\n"
+  end
+end
 
 describe "fixed length field" do
   before do
@@ -36,6 +43,10 @@ describe "creating a XDT block" do
 
   it "should have a string representation where the length field exists and has the correct value" do
     @block.to_s.should == "01380000020\r\n014810000039\r\n0129105123\r\n"
+  end
+
+  it "should have correct encoding" do
+    @block.to_s.encoding.should == Encoding.find("iso-8859-1")
   end
 end
 

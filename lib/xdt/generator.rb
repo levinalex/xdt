@@ -10,7 +10,7 @@ module Xdt
       end
 
       def to_s
-        elements.map { |s| s.to_s }.join || ""
+        str = elements.map { |s| s.to_s }.join || ""
       end
 
       def length
@@ -39,13 +39,16 @@ module Xdt
       end
 
       def length
-        (@length || @data.to_s.length) + 9
+        (@length || data.to_s.length) + 9
+      end
+
+      def data
+        @_str ||= @data ? @data.to_s : @blk.call
       end
 
       def to_s
-        data = @data ? @data.to_s : @blk.call
-        data = data[0 ... length - 9] # clip at length
-        "#{ '%03d'  % self.length }#{ '%04d' % @id.to_i }#{data}\x0D\x0A"
+        str = "#{ '%03d'  % self.length }#{ '%04d' % @id.to_i }#{data[0...self.length - 9]}\x0D\x0A"
+        str = str.encode("iso-8859-1", :invalid => :replace, :undef => :replace)
       end
     end
 
