@@ -32,6 +32,7 @@ describe "creating an LG-report" do
   end
 
   it "should have correct length" do
+    puts @lg.to_s
     @lg.to_s[/9202\d{8}/][-8..-1].to_i.should == @lg.to_s.length
   end
 end

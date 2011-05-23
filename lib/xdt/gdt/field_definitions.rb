@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'field_handling.rb')
 
 module Gdt
   class GdtFields < AbstractField
-    
+
     field 3000, :nr, "Patientennummer/Patientenkennung", (0..10), :alnum
     field 3100, :name_prefix, "Namenszusatz/Vorsatzwort des Patienten", (0..15)
     field 3101, :last_name, "Name des Patienten", (0..28)
@@ -29,7 +29,5 @@ module Gdt
     # bogus fields to suppress errors
     field 9901, :unknown, "unknown", (0..60), :alnum
     field 8402, :unknown, "unknown", (0..60), :alnum
-    
-
   end
 end

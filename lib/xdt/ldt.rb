@@ -54,12 +54,14 @@ module Xdt
           s.field("9106", "3") # Charset (iso-8859-1)
           s.field("8312", "1") # Kundennummer
           s.field("9103", Date.today.strftime("%D%M%Y"))
+          raise s.length.to_s
         end
 
         yield self if block_given?
 
         section("8221") do |s|
-          overhead = 44
+          # overhead = 44
+          overhead = 0
           s.field("9202", (length + overhead).to_s.rjust(8,"0"))
         end
 
