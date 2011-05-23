@@ -18,7 +18,7 @@ module Xdt
           s.field("9103", Date.today.strftime("%D%M%Y"))
         end
 
-        yield self if block_given?
+        super
 
         section("8221") do |s|
           overhead = 44
