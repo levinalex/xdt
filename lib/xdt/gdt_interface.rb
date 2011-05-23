@@ -1,8 +1,7 @@
 GDT_ROOT = File.dirname(File.expand_path(__FILE__))
 
-require File.join(GDT_ROOT, 'gdt', 'parser.rb')
-require File.join(GDT_ROOT, 'gdt', 'field_definitions.rb')
-
+require 'xdt/gdt/parser'
+require 'xdt/gdt/field_definitions'
 
 module Gdt
   class Gdt

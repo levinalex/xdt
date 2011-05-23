@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
-require File.join(File.dirname(__FILE__),'..','lib','gdt2http.rb')
+require 'xdt'
+require 'xdt/bin/gdt2http'
 
 Gdt::Gdt2Http.new.run!

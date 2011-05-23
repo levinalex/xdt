@@ -1,10 +1,10 @@
-require 'lib/gdt_interface.rb'
+require 'lib/xdt/gdt_interface.rb'
 
 context "reading GDT data from a file" do
   def read_file
     Gdt::Gdt.new(File.read('./spec/examples/BARCQPCN.001'))
   end
-  
+
   specify "should work without errors" do
     lambda { Gdt::Gdt.new(File.read('./spec/examples/BARCQPCN.001')) }.should_not raise_error
   end

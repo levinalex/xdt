@@ -4,13 +4,13 @@ require 'optparse'
 require 'net/http'
 require 'yaml'
 
-require File.join(File.dirname(__FILE__),'gdt_interface.rb')
+require 'xdt'
 
 module Gdt
   ConfigFilename = ".gdt2http"
   ConfigFile = File.join(ENV['HOME'] || ENV['APPDATA'], ConfigFilename)
-  
-  # defaults are used when they are not overwritten in a config file 
+
+  # defaults are used when they are not overwritten in a config file
   # or with command line options
   #
   DefaultConfig = {
@@ -18,23 +18,23 @@ module Gdt
     :endpoint => "http://localhost:3000/gdt",
     :delete_files => true
   }
-  
+
   class Gdt2Http
-    
+
     # load configuration from configfile, merge with
     # default options
     #
     def load_configuration
      # try to read configuration from file
       @options_from_file = YAML.load_file(ConfigFile) || {} rescue {}
-      
+
       # if an option is not given on the command line
       # it is taken from the config file, or the default is used
       @options = Hash.new() { |h,k| @options_from_file[k] || DefaultConfig[k] }
     end
-   
+
     # parse command line options
-    # 
+    #
     def initialize
       load_configuration
 
@@ -52,7 +52,7 @@ module Gdt
           @options[:endpoint] = arg
         end
         opts.on_tail "-p", "--print-config", "Print the current configuration",
-                                             "in a format that can be used as a configuration file" do 
+                                             "in a format that can be used as a configuration file" do
           puts @options_from_file.merge(@options).to_yaml
           exit
         end
@@ -66,7 +66,7 @@ module Gdt
     def handle_file(filename)
       # open and parse the given file
       str = File.read(filename)
-      
+
       begin
         data = Gdt.new(str)
 
