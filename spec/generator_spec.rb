@@ -10,6 +10,23 @@ describe "an XDT record with an ID and some data" do
   end
 end
 
+
+describe "fixed length field" do
+  before do
+    @called = false
+    @field = Xdt::Generator::Field.new("8000", nil, 6) { @called = true; "content" }
+  end
+
+  it "should not call when getting length" do
+    @field.length.should == 15
+    @called.should == false
+  end
+
+  it "should have correct string representation" do
+    @field.to_s.should == "0158000conten\r\n"
+  end
+end
+
 describe "creating a XDT block" do
   before do
     @block = Xdt::Generator::Section.new("0020") do |b|
