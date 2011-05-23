@@ -23,11 +23,10 @@ module Xdt
         super
 
         section("8221") do |s|
-          overhead = 44
-          s.field("9202", (length + overhead).to_s.rjust(8,"0"))
+          s.field("9202", nil, 8) { self.length.to_s.rjust(8, "0") }
         end
-
       end
     end
   end
 end
+
