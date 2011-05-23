@@ -28,7 +28,6 @@ module Xdt
       def initialize
         yield self
       end
-
     end
 
     class Field

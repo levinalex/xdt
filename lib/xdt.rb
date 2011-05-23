@@ -1,4 +1,5 @@
 require 'xdt/generator'
+require 'xdt/parser'
 require 'xdt/ldt/lg_report'
 
 module Xdt
