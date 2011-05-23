@@ -3,4 +3,5 @@
 require 'xdt'
 require 'xdt/bin/gdt2http'
 
-Gdt::Gdt2Http.new.run!
+Xdt::App::Gdt2Http.new.run!
+

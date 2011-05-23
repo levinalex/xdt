@@ -6,7 +6,7 @@ require 'yaml'
 
 require 'xdt'
 
-module Gdt
+module Xdt
   ConfigFilename = ".gdt2http"
   ConfigFile = File.join(ENV['HOME'] || ENV['APPDATA'], ConfigFilename)
 
