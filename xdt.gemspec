@@ -22,6 +22,9 @@ Gem::Specification.new do |s|
   s.rubyforge_project = %q{xdt}
   s.rubygems_version = %q{1.2.0}
 
+  s.add_dependency "json", "~> 1.4.0"
+
   s.add_development_dependency "rspec"
+  s.add_development_dependency "webmock"
 end
 

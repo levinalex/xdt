@@ -3,10 +3,11 @@
 require 'optparse'
 require 'net/http'
 require 'yaml'
+require 'json'
 
 require 'xdt'
 
-module Xdt
+module Xdt::App
   ConfigFilename = ".gdt2http"
   ConfigFile = File.join(ENV['HOME'] || ENV['APPDATA'], ConfigFilename)
 
@@ -40,7 +41,7 @@ module Xdt
 
       @opts = OptionParser.new do |opts|
         opts.on "-V","--version","Display version and exit" do
-          puts "#{self.class} #{::Gdt::VERSION}"
+          puts "#{self.class} #{::Xdt::VERSION}"
           exit
         end
         opts.on "-f", "--files PATTERN", Array,
@@ -68,16 +69,18 @@ module Xdt
       str = File.read(filename)
 
       begin
-        data = Gdt.new(str)
+        data = Xdt::Parser.parse(str)
 
         begin
-          res = ::Net::HTTP.post_form(URI.parse(@options[:endpoint]), data.to_hash )
+          url = URI.parse(@options[:endpoint])
+          req = Net::HTTP::Post.new(url.path, {'Content-Type' =>'application/json'})
+          req.body = data.to_hash.to_json
+          res = Net::HTTP.new(url.host, url.port).start {|http| http.request(req) }
+
           puts res.header.to_hash.map { |k,v| "#{k}: #{v}" }
-          puts
           case res
           when ::Net::HTTPSuccess
             File.delete(filename) if @options[:delete_files]
-            puts res.body
           when ::Net::HTTPClientError
             warn "Client Error"
           when ::Net::HTTPServerError
@@ -87,8 +90,6 @@ module Xdt
         rescue ::Errno::ECONNREFUSED
           puts "Unable to connect to server '#{@options[:endpoint]}' (connection refused)"
         end
-      rescue ParseError => e
-        warn "Parse error in '#{filename}'"
       end
     end
 
