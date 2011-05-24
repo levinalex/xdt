@@ -80,7 +80,7 @@ module Xdt::App
 
       dumpfile.unlink
 
-      # File.delete(filename) if @options[:delete_files]
+      File.delete(filename) if @options[:delete_files]
     end
 
     # run the application
