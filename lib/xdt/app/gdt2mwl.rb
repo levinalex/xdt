@@ -3,6 +3,7 @@
 require 'optparse'
 require 'yaml'
 require 'json'
+require 'tempfile'
 
 # require 'xdt'
 
@@ -18,7 +19,7 @@ module Xdt::App
     :delete_files => true
   }
 
-  class Gdt2Http
+  class Gdt2Mwl
 
     # load configuration from configfile, merge with
     # default options
@@ -47,6 +48,9 @@ module Xdt::App
                     "default is '**/*.GDT'" do |arg|
           @options[:files] = arg
         end
+        opts.on "-d", "--directory DIR" do |arg|
+          @options[:dir] = arg
+        end
         opts.on_tail "-p", "--print-config", "Print the current configuration",
                                              "in a format that can be used as a configuration file" do
           puts @options_from_file.merge(@options).to_yaml
@@ -60,19 +64,30 @@ module Xdt::App
     end
 
     def handle_file(filename)
-      # open and parse the given file
       str = File.read(filename)
-
       data = Xdt::Parser.parse(str)
       dcmdata = data.to_dicom
 
-      File.delete(filename) if @options[:delete_files]
+      dumpfile = Tempfile.new("dcmdump")
+      dumpfile.write(dcmdata)
+      dumpfile.close
+
+      outpath = File.join(@options[:dir], "worklist", "%012d.wl" % Time.now.to_i)
+
+      `dump2dcm #{dumpfile.path} #{outpath}`
+
+      dumpfile.unlink
+
+      # File.delete(filename) if @options[:delete_files]
     end
 
     # run the application
     #
     def run!(args = ARGV)
       @opts.parse!(args)
+
+      raise "Directory must be provided" unless @options[:dir] and Dir.exist?(@options[:dir])
+
       files.each { |f|
         handle_file(f)
       }
