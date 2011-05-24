@@ -1,14 +1,13 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'net/http'
 require 'yaml'
 require 'json'
 
-require 'xdt'
+# require 'xdt'
 
 module Xdt::App
-  ConfigFilename = ".gdt2http"
+  ConfigFilename = ".gdt2mwl"
   ConfigFile = File.join(ENV['HOME'] || ENV['APPDATA'], ConfigFilename)
 
   # defaults are used when they are not overwritten in a config file
@@ -16,7 +15,6 @@ module Xdt::App
   #
   DefaultConfig = {
     :files => ["**/*.GDT"],
-    :endpoint => "http://localhost:3000/gdt",
     :delete_files => true
   }
 
@@ -49,9 +47,6 @@ module Xdt::App
                     "default is '**/*.GDT'" do |arg|
           @options[:files] = arg
         end
-        opts.on "-u", "--uri URI", "URI of the HTTP-Endpoint to which the parsed data is sent" do |arg|
-          @options[:endpoint] = arg
-        end
         opts.on_tail "-p", "--print-config", "Print the current configuration",
                                              "in a format that can be used as a configuration file" do
           puts @options_from_file.merge(@options).to_yaml
@@ -68,29 +63,10 @@ module Xdt::App
       # open and parse the given file
       str = File.read(filename)
 
-      begin
-        data = Xdt::Parser.parse(str)
+      data = Xdt::Parser.parse(str)
+      dcmdata = data.to_dicom
 
-        begin
-          url = URI.parse(@options[:endpoint])
-          req = Net::HTTP::Post.new(url.path, {'Content-Type' =>'application/json'})
-          req.body = data.to_hash.to_json
-          res = Net::HTTP.new(url.host, url.port).start {|http| http.request(req) }
-
-          puts res.to_hash.map { |k,v| "#{k}: #{v}" }
-          case res
-          when ::Net::HTTPSuccess
-            File.delete(filename) if @options[:delete_files]
-          when ::Net::HTTPClientError
-            warn "Client Error"
-          when ::Net::HTTPServerError
-            warn "Server Error"
-          end
-
-        rescue ::Errno::ECONNREFUSED
-          puts "Unable to connect to server '#{@options[:endpoint]}' (connection refused)"
-        end
-      end
+      File.delete(filename) if @options[:delete_files]
     end
 
     # run the application

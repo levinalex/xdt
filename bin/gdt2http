@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'xdt'
-require 'xdt/bin/gdt2http'
+require 'xdt/app/gdt2http'
 
 Xdt::App::Gdt2Http.new.run!
 
