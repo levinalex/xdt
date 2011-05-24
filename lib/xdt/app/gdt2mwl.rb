@@ -63,7 +63,7 @@ module Xdt::App
       @options[:files].map { |p| Dir.glob(p) }.flatten.compact.uniq
     end
 
-    def handle_file(filename)
+    def handle_file(filename,idx)
       str = File.read(filename)
       data = Xdt::Parser.parse(str)
       dcmdata = data.to_dicom
@@ -72,7 +72,7 @@ module Xdt::App
       dumpfile.write(dcmdata)
       dumpfile.close
 
-      outpath = File.join(@options[:dir], "worklist", "%012d.wl" % Time.now.to_i)
+      outpath = File.join(@options[:dir], "worklist", "%012d%03d.wl" % [Time.now.to_i, idx])
 
       `dump2dcm #{dumpfile.path} #{outpath}`
 
@@ -88,7 +88,7 @@ module Xdt::App
 
       raise "Directory must be provided" unless @options[:dir] and Dir.exist?(@options[:dir])
 
-      files.each { |f|
+      files.each_with_index { |f,i|
         handle_file(f)
       }
     end
