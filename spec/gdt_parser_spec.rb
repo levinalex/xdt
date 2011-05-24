@@ -20,6 +20,15 @@ context "Valid GDT tokens" do
   end
 end
 
+# context "Malformed data" do
+#   specify "should raise an exception on malformed length" do
+#     lambda { Xdt::Parser.parse("01480006301") }.should raise_error(Xdt::ParseError)
+#   end
+#
+#   specify "that does not conform to the format at all should raise an exception" do
+#     lambda { Xdt::Parser.parse("useless garbage\\r\\nwith multiple lines\\r\\n") }.should raise_error(Xdt::ParseError)
+#   end
+# end
 
 context "a valid Gdt file from Quincy PCNet" do
   before do

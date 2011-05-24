@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'xdt'
+require 'xdt/app/gdt2mwl'
+
+Xdt::App::Gdt2Mwl.new.run!
+
