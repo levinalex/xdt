@@ -34,8 +34,8 @@ module Xdt
           # d.element("0020,000d", "UI", ["1.2.826.0.1.3680043.8.1634", "0.0", Time.now.to_i].join("."))
 
           d.element("0020,000d", "UI"  "1.2.276.0.7230010.3.2.102")
-          d.element("0032,1032", "PN"  "NEWMAN")
-          d.element("0032,1060", "LO"  "EXAM5464")
+          d.element("0032,1032", "PN"  "")
+          d.element("0032,1060", "LO"  "")
 
           d.element("0040,0100", "SQ")
             d.element("fffe,e000", "-")
@@ -43,11 +43,11 @@ module Xdt
 
               d.element("0032,1070", "LO")
               d.element("0040,0001", "AE",  "AB45")
-              d.element("0040,0002", "DA", "19960406")
-              d.element("0040,0003", "TM", "160700")
-              d.element("0040,0006", "PN", "ROSS")
-              d.element("0040,0007", "LO", "EXAM04")
-              d.element("0040,0009", "SH",  "SPD1342")
+              d.element("0040,0002", "DA", Time.now.strftime("%Y%m%d"))
+              d.element("0040,0003", "TM", Time.now.strftime("%H%M00"))
+              d.element("0040,0006", "PN", "")
+              d.element("0040,0007", "LO", "")
+              d.element("0040,0009", "SH", "SPD1342")
               d.element("0040,0010", "SH", "STNAB89")
               d.element("0040,0011", "SH", "B67F66")
               d.element("0040,0012", "LO")
