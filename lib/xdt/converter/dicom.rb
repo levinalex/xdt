@@ -17,7 +17,7 @@ module Xdt
         end
 
         def to_s
-          @elems.join("\n")
+          @elems.join("\n").encode("iso-8859-1")
         end
       end
 
@@ -52,16 +52,14 @@ module Xdt
               d.element("0040,0011", "SH", "B67F66")
               d.element("0040,0012", "LO")
               d.element("0040,0400", "LT")
-
-
             d.element("fffe,e00d", "-")
           d.element("fffe,e0dd", "-")
+
           d.element("0040,1001", "SH", "RP488M9439")
           d.element("0040,1003", "SH", "HIGH")
 
-
         end.to_s
-        p text
+
         text
       end
 
