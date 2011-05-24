@@ -63,16 +63,18 @@ module Xdt::App
       @options[:files].map { |p| Dir.glob(p) }.flatten.compact.uniq
     end
 
-    def handle_file(filename,idx)
+    def handle_file(filename, idx)
       str = File.read(filename)
       data = Xdt::Parser.parse(str)
+
+      file_id = data[3000] || rand(10e10).to_s
       dcmdata = data.to_dicom
 
       dumpfile = Tempfile.new("dcmdump")
       dumpfile.write(dcmdata)
       dumpfile.close
 
-      outpath = File.join(@options[:dir], "worklist", "%012d%03d.wl" % [Time.now.to_i, idx])
+      outpath = File.join(@options[:dir], "worklist", "%s.wl" % file_id)
 
       `dump2dcm #{dumpfile.path} #{outpath}`
 
@@ -89,8 +91,17 @@ module Xdt::App
       raise "Directory must be provided" unless @options[:dir] and Dir.exist?(@options[:dir])
 
       files.each_with_index { |f,i|
-        handle_file(f)
+        handle_file(f,i)
       }
+
+      # cleanup worklist folder
+      existing_files = Dir[File.join(@options[:dir], "worklist", "*.wl")].sort_by { |f| File.mtime(f) }.reverse # newest first
+      puts existing_files
+
+      to_delete = existing_files[30 .. -1] || []
+      to_delete.each do |f|
+        File.delete(f)
+      end
     end
   end
 end
