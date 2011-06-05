@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'erb'
+
 describe "Valid GDT tokens" do
   before do
     @line = "01380006301\r\n"
@@ -76,9 +78,9 @@ describe "a valid Gdt file from Quincy PCNet" do
     end
 
     it "should have correct dicom representation" do
-      expected = File.open("spec/examples/BARCQPCN.dump.expected").read
+      text = File.read("spec/examples/BARCQPCN.dump.expected.erb")
+      expected = ERB.new(text).result.to_s.strip
       @xdt.to_dicom.should == expected
-
     end
   end
 end
