@@ -4,7 +4,7 @@ require 'xdt/app/gdt2http'
 require 'webmock/rspec'
 require 'tmpdir'
 
-context "gdt2http" do
+describe "gdt2http" do
   before do
     @app = Xdt::App::Gdt2Http
   end

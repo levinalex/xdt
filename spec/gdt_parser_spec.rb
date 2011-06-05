@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-context "Valid GDT tokens" do
+describe "Valid GDT tokens" do
   before do
     @line = "01380006301\r\n"
   end
@@ -30,7 +30,7 @@ end
 #   end
 # end
 
-context "a valid Gdt file from Quincy PCNet" do
+describe "a valid Gdt file from Quincy PCNet" do
   before do
     @gdt_data = File.read(File.dirname(__FILE__) + '/examples/BARCQPCN.001')
   end
@@ -40,7 +40,7 @@ context "a valid Gdt file from Quincy PCNet" do
   end
 
 
-  context "parsing" do
+  describe "parsing" do
     before do
       @xdt = Xdt::Parser.parse( @gdt_data )
     end

@@ -4,12 +4,11 @@ require 'bundler'
 Bundler::GemHelper.install_tasks
 
 require 'xdt'
-require 'spec/rake/spectask'
+require 'rspec/core/rake_task'
 
-Spec::Rake::SpecTask.new do |t|
-  t.warning = true
-  t.spec_opts = %w(-c -f specdoc)
+RSpec::Core::RakeTask.new do |t|
 end
+
 task :test => :spec
 task :default => :test
 
