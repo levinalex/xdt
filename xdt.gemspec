@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
 
-  s.homepage = %q{http://levinalex.net/src/xdt}
+  s.homepage = "http://github.com/levinalex/xdt"
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{xdt}
   s.rubygems_version = %q{1.2.0}
