@@ -34,17 +34,17 @@ end
 
 describe "a valid Gdt file from Quincy PCNet" do
   before do
-    @gdt_data = File.read(File.dirname(__FILE__) + '/examples/BARCQPCN.001')
+    @xdt_data = File.read(File.dirname(__FILE__) + '/examples/BARCQPCN.001')
   end
 
   specify "should parse without error" do
-     lambda { Xdt::Parser.parse( @gdt_data ) }.should_not raise_error
+     lambda { Xdt::Parser.parse( @xdt_data ) }.should_not raise_error
   end
 
 
   describe "parsing" do
     before do
-      @xdt = Xdt::Parser.parse( @gdt_data )
+      @xdt = Xdt::Parser.parse( @xdt_data )
     end
 
     it "should contain 14 fields" do
@@ -67,9 +67,9 @@ describe "a valid Gdt file from Quincy PCNet" do
         3108 => "3",
         3110 => "1" }
 
-      @xdt.to_hash.should satisfy { |gdt|
-        gdt[3000] == "98" && gdt[8000] == "6301" && gdt[3101] == "Sierra"
-        gdt.should == expected
+      @xdt.to_hash.should satisfy { |xdt|
+        xdt[3000] == "98" && xdt[8000] == "6301" && xdt[3101] == "Sierra"
+        xdt.should == expected
       }
     end
 
