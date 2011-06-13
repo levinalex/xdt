@@ -80,7 +80,7 @@ module Xdt
 
     def self.parse(string_scanner)
       data = string_scanner.string
-      encoding = data.match(/^\\d{3}9206(\\d)/) ? (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) : Encoding::CP437
+      encoding = data.match(/^\d{3}9206(\d)/) ? (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) : Encoding::CP437
       string_scanner.string = data.force_encoding(encoding).encode("utf-8")
 
       document = new
