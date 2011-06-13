@@ -12,7 +12,7 @@ module Xdt
            (\d{3})    # line length
            (\d{4})    # field id
            (.*?)      # field data
-           \r?$       # match data until end of line or EOF
+           \r?\n?$    # match data until end of line or EOF
          /x
 
     def initialize(id, value, length=nil, &blk)

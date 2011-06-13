@@ -40,9 +40,7 @@ describe "date fields" do
     assert_equal "3103", @field.id
     assert_equal @text, @field.to_xdt
   end
-
 end
-
 
 
 describe "reading Xdt Fields" do
@@ -69,11 +67,16 @@ end
 describe "reading a document" do
   before do
     @text = File.read("test/examples/qpcn.gdt", encoding: "CP437")
-    @xdt = Xdt::Document.parse(StringScanner.new(@text))
+    @scanner = StringScanner.new(@text)
+    @xdt = Xdt::Document.parse(@scanner)
   end
 
   it "should return a document" do
     assert_kind_of Xdt::Document, @xdt
+  end
+
+  it "should leave scanner at EOS" do
+    assert_equal true, @scanner.eos?
   end
 
   it "should make parsed fields accessible" do
