@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.2.0}
 
   s.add_dependency "json", "~> 1.4.0"
+  s.add_dependency "activesupport", "~> 3.0.0"
 
   s.add_development_dependency "minitest", "~> 2.2.0"
   s.add_development_dependency "webmock"

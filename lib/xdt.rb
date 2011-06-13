@@ -1,5 +1,4 @@
-require 'xdt/generator'
-require 'xdt/converter/dicom'
-require 'xdt/parser'
-require 'xdt/ldt/lg_report'
 require 'xdt/version'
+require 'xdt/fields'
+require 'xdt/document'
+require 'xdt/gdt'
