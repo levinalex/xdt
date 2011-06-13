@@ -29,6 +29,23 @@ module Xdt
         nil
       end
 
+      def parse(string_scanner)
+        data = string_scanner.string
+        encoding = data.match(/^\d{3}9206(\d)/) ? (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) : Encoding::CP437
+        string_scanner.string.force_encoding(encoding)
+
+        document = new
+
+        while next_field = Xdt::Field.parse(string_scanner.dup)
+          method, klass = with_field(next_field.id) do |method, klass|
+            field = klass.parse(string_scanner)
+            document.send(method, field) if method
+          end
+        end
+
+        document
+      end
+
 
       def get_field(id)
         hash = self.known_fields || {}
@@ -77,23 +94,6 @@ module Xdt
       end
     end
 
-
-    def self.parse(string_scanner)
-      data = string_scanner.string
-      encoding = data.match(/^\d{3}9206(\d)/) ? (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) : Encoding::CP437
-      string_scanner.string = data.force_encoding(encoding).encode("utf-8")
-
-      document = new
-
-      while next_field = Xdt::Field.parse(string_scanner.dup)
-        method, klass = with_field(next_field.id) do |method,klass|
-          field = klass.parse(string_scanner)
-          document.send(method, field) if method
-        end
-      end
-
-      document
-    end
   end
 end
 

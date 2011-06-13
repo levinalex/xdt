@@ -1,36 +1,32 @@
 # encoding: utf-8
 #
 module Xdt
-  # class LGReport < Generator::Section
+  module Ldt
 
-  # end
+    class TestIdent < Xdt::Document
+      has_field "8410", :test_ident
+      has_field "8411", :name
+      has_field "8420", :value
+      has_field "8421", :unit
 
-  class Ldt < Xdt::Document
-    # def initialize
-    #   section("8220") do |s|
-    #     s.field("9211", "07/99")
-    #     # s.field("0201", "") # Arztnummer
-    #     s.field("0203", "Alexander")  # Arztname
-    #     s.field("0204", "Nuklearmediziner") # Arztgruppe
-    #     s.field("0205", "Schönhauser Allee 82") # Strasse
-    #     s.field("0206", "10439 Berlin") # PLZ Ort
-    #     s.field("8300", "LABOR Schoenhauser Allee 82")
-    #     # s.field("0101", "") # KBV Prüfnummer
-    #     s.field("9106", "3") # Charset (iso-8859-1)
-    #     s.field("8312", "1") # Kundennummer
-    #     s.field("9103", Date.today.strftime("%D%M%Y"))
-    #   end
+      def self.parse(string_scanner)
+        # scan until the next block
+        rx = /
+          [^\A]
+          \r?\n?
+          (?=
+              (?:\d{3}8410) |
+              \Z
+           )
+          /xm
+        block = string_scanner.scan_until(rx)
 
-    #   super
+        super(StringScanner.new(block))
+      end
+    end
 
-    #   section("8221") do |s|
-    #     s.field("9202", nil, 8) { self.length.to_s.rjust(8, "0") }
-    #   end
-
-
-    # end
-
-
+    class Document < Xdt::Document
+    end
   end
 
 end

@@ -2,25 +2,49 @@ require 'helper'
 
 describe "LDT generation" do
 
-  describe "generating a minimal GDT file" do
+describe "LG reports" do
+  describe "parsing test results" do
     before do
-      @ldt = Xdt::Ldt.new do |ldt|
-        ldt.request_id = "123"
-        ldt.patient_id = "98"
-        ldt.test("456") do |t|
-        end
-      end
+      @text = %w(
+        0128410TSH
+        0128411TSH
+        01384201.46
+        0178460\t<\t2.5
+        0138421mE/l
+        0128410FT3
+        0128411FT3
+        01384204.50
+        02084603.5\t-\t8.1
+        0158421pmol/l
+      ).join("\r\n")
+      @data = StringScanner.new(@text)
+
+      @result1 = Xdt::Ldt::TestIdent.parse(@data)
+      @result2 = Xdt::Ldt::TestIdent.parse(@data)
     end
 
+    it "should have parsed correctly" do
+      assert_equal "TSH", @result1.test_ident
+      assert_equal "TSH", @result1.name
+      assert_equal "1.46", @result1.value
+      assert_equal "mE/l", @result1.unit
 
-    it "should have generated a minimal file" do
-      expected = %w(
-        80006301
-      ).map { |l| "#{"%03d" % (l.length+5)}#{l}\r\n" }.join
-
-      assert_equal expected, @ldt.to_xdt.encode("utf-8")
+      assert_equal "FT3", @result2.test_ident
+      assert_equal "FT3", @result2.name
+      assert_equal "4.50", @result2.value
+      assert_equal "pmol/l", @result2.unit
     end
+  end
+end
 
+describe "Ldt parsing" do
+  before do
+    @text = File.read("test/examples/ldt/e1.ldt", encoding: "ASCII-8BIT")
+    @ldt = Xdt::Ldt::Document.parse(StringScanner.new(@text))
   end
 
+  it "should serialize to itself" do
+    assert_equal @text, @ldt.to_xdt
+  end
 end
+
