@@ -1,0 +1,9 @@
+{
+    "id": "3-1",
+    "given_name": "Gerhard",
+    "last_name": "Auge",
+    "gender": "male",
+    "born_on": "1956-03-31",
+    "name_prefix": "",
+    "title": ""
+}
