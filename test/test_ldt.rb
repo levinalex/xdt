@@ -1,6 +1,7 @@
 require 'helper'
 
 describe "LDT generation" do
+end
 
 describe "LG reports" do
   describe "parsing test results" do
@@ -45,6 +46,16 @@ describe "Ldt parsing" do
 
   it "should serialize to itself" do
     assert_equal @text, @ldt.to_xdt
+  end
+
+  it "should have one lg report" do
+    assert_equal 1, @ldt.lg_reports.length
+    assert_kind_of Xdt::Ldt::LgReport, @ldt.lg_reports[0]
+  end
+
+  it "should have 4 tests in lg report" do
+    assert_equal 4, @ldt.lg_reports.first.test_idents.length
+    assert_equal ["TSH", "FT3", "FT4", "a-TPO"], @ldt.lg_reports.first.test_idents.map(&:name)
   end
 end
 

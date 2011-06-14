@@ -31,9 +31,7 @@ module Xdt::Gdt
       super.encode(self.charset, :invalid => :replace, :undef => :replace)
     end
 
-    def length
-      to_a.inject(0) { |sum,e| sum + e.length }
-    end
+
 
     def each
       yield Xdt::Field.new("8000", @type)

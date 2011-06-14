@@ -11,9 +11,8 @@ module Xdt
         klass = opts.fetch(:class, Xdt::Field)
         method = opts.fetch(:method, :append_field)
 
-        val = self.known_fields || {}
-        val[id.to_s] = [method, klass]
-        self.known_fields = val
+        self.known_fields ||= {}
+        self.known_fields[id.to_s] = [method, klass]
 
         if name
           define_method("#{name}=") do |v|
@@ -31,13 +30,15 @@ module Xdt
 
       def parse(string_scanner)
         data = string_scanner.string
-        encoding = data.match(/^\d{3}9206(\d)/) ? (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) : Encoding::CP437
+        encoding = data.match(/^\d{3}9206(\d)/) ?
+                    (Xdt::ENCODINGS[$1.to_i] || Encoding::CP437) :
+                    Encoding::CP437
         string_scanner.string.force_encoding(encoding)
 
         document = new
 
         while next_field = Xdt::Field.parse(string_scanner.dup)
-          method, klass = with_field(next_field.id) do |method, klass|
+          method, klass = with_field(next_field.id, next_field.value) do |method, klass|
             field = klass.parse(string_scanner)
             document.send(method, field) if method
           end
@@ -47,13 +48,13 @@ module Xdt
       end
 
 
-      def get_field(id)
+      def get_field(id, value = "")
         hash = self.known_fields || {}
-        hash[id] || [:append_field, Xdt::Field]
+        hash[id + value] || hash[id] || [:append_field, Xdt::Field]
       end
 
-      def with_field(id)
-        yield get_field(id)
+      def with_field(*args)
+        yield get_field(*args)
       end
     end
 
@@ -71,6 +72,10 @@ module Xdt
 
     def each
       @elements.each { |(id,elem)| yield elem }
+    end
+
+    def length
+      to_a.inject(0) { |sum,e| sum + e.length }
     end
 
     def to_xdt
