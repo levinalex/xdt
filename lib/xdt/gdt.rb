@@ -19,8 +19,10 @@ module Xdt::Gdt
 
 
     def initialize
-      super
-      self.charset = Encoding::IBM437
+      super do
+        self.charset = Encoding::IBM437
+        yield self if block_given?
+      end
     end
 
     def type
@@ -58,15 +60,15 @@ module Xdt::Gdt
 
   class SendPatientInformation < Xdt::Gdt::Document
     def initialize(patient_id, patient_last_name, patient_given_name, patient_born_on)
-      super()
       @type = "6301"
-
-      self.version = "02.10"
-      self.patient_id = patient_id
-      self.patient_last_name = patient_last_name
-      self.patient_given_name = patient_given_name
-      self.patient_born_on = patient_born_on
-      yield self if block_given?
+      super() do
+        self.version = "02.10"
+        self.patient_id = patient_id
+        self.patient_last_name = patient_last_name
+        self.patient_given_name = patient_given_name
+        self.patient_born_on = patient_born_on
+        yield self if block_given?
+      end
     end
 
   end

@@ -63,6 +63,7 @@ module Xdt
 
     def initialize
       @elements ||= []
+      yield self if block_given?
     end
 
     def first(id)
