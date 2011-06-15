@@ -17,12 +17,12 @@ describe "parsing a GDT file" do
   end
 
   it "should have correct length when serializing" do
-    @expected = %w(
+    @expected = array_to_xdt %w(
       80006301
       810000054
       8315Foo
       3101Sierra
-    ).map { |l| "#{"%03d" % (l.length+5)}#{l}\r\n" }.join
+    )
 
     assert_equal 54, @gdt.to_xdt.length
     assert_equal @expected, @gdt.to_xdt
@@ -111,15 +111,15 @@ describe "generating a minimal gdt file" do
   end
 
   it "should serialize to a minimal GDT file" do
-    expected = %w(
-      01380006301
-      014810000100
-      014921802.10
-      011300098
-      0153101Sierra
-      0163102Rudolph
-      017310312031960
-    ).map { |l| l + "\r\n" }.join
+    expected = array_to_xdt %w(
+      80006301
+      810000100
+      921802.10
+      300098
+      3101Sierra
+      3102Rudolph
+      310312031960
+    )
 
     assert_equal expected, @gdt.to_xdt
   end
@@ -140,7 +140,7 @@ describe "generating a complete GDT file" do
   end
 
   it "should generate correct data" do
-    expected = %w(
+    expected = array_to_xdt %w(
         80006301
         810000236
         92062
@@ -156,7 +156,7 @@ describe "generating a complete GDT file" do
         310612345\ Ort
         3107?????\ Iñtërnâtiônàlizæti?n
         31101
-    ).map { |l| "#{"%03d" % (l.length+5)}#{l}\r\n" }.join
+    )
 
     assert_equal expected, @gdt.to_xdt.encode("utf-8")
   end

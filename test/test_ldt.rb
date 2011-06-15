@@ -3,21 +3,22 @@ require 'helper'
 describe "LDT generation" do
 end
 
+
 describe "LG reports" do
   describe "parsing test results" do
     before do
-      @text = %w(
-        0128410TSH
-        0128411TSH
-        01384201.46
-        0178460\t<\t2.5
-        0138421mE/l
-        0128410FT3
-        0128411FT3
-        01384204.50
-        02084603.5\t-\t8.1
-        0158421pmol/l
-      ).join("\r\n")
+      @text = array_to_xdt %w(
+        8410TSH
+        8411TSH
+        84201.46
+        8460\t<\t2.5
+        8421mE/l
+        8410FT3
+        8411FT3
+        84204.50
+        84603.5\t-\t8.1
+        8421pmol/l
+      )
       @data = StringScanner.new(@text)
 
       @result1 = Xdt::Ldt::TestIdent.parse(@data)
