@@ -35,7 +35,8 @@ module Xdt
                     Encoding::CP437
         string_scanner.string.force_encoding(encoding)
 
-        document = new
+        document = allocate
+        document.initialize!
 
         while next_field = Xdt::Field.parse(string_scanner.dup)
           method, klass = with_field(next_field.id, next_field.value) do |method, klass|
@@ -46,7 +47,6 @@ module Xdt
 
         document
       end
-
 
       def get_field(id, value = "")
         hash = self.known_fields || {}
@@ -62,8 +62,13 @@ module Xdt
     extend ClassMethods
 
     def initialize
-      @elements ||= []
+      initialize!
       yield self if block_given?
+    end
+
+
+    def initialize!
+      @elements ||= []
     end
 
     def first(id)

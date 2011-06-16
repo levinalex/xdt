@@ -25,6 +25,17 @@ module Xdt
 
         super(StringScanner.new(block))
       end
+
+
+      def initialize(id, name, value, unit)
+        super() do
+          self.test_ident = id
+          self.name = name
+          self.value = value
+          self.unit = unit
+          yield self if block_given?
+        end
+      end
     end
 
     class LgReport < Xdt::Document
@@ -51,6 +62,7 @@ module Xdt
       end
 
       def result(id, name, value, unit)
+        @elements << [:foo, TestIdent.new(id, name, value, unit)]
       end
 
     end

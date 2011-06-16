@@ -18,11 +18,9 @@ module Xdt::Gdt
     has_field 9218, :version
 
 
-    def initialize
-      super do
-        self.charset = Encoding::IBM437
-        yield self if block_given?
-      end
+    def initialize!
+      super
+      self.charset = Encoding::IBM437
     end
 
     def type
@@ -33,14 +31,11 @@ module Xdt::Gdt
       super.encode(self.charset, :invalid => :replace, :undef => :replace)
     end
 
-
-
     def each
       yield Xdt::Field.new("8000", @type)
       yield Xdt::Field.new("8100", nil, 5) { "%05d" % self.length }
       super
     end
-
 
     def set_type(field)
       @type = field.value
@@ -53,10 +48,7 @@ module Xdt::Gdt
         h
       end
     end
-
-
   end
-
 
   class SendPatientInformation < Xdt::Gdt::Document
     def initialize(patient_id, patient_last_name, patient_given_name, patient_born_on)
@@ -70,8 +62,6 @@ module Xdt::Gdt
         yield self if block_given?
       end
     end
-
   end
-
 end
 
