@@ -10,27 +10,38 @@ describe "LDT generation" do
           lg.requested_on = Date.new(2011, 4, 13)
           lg.finished_on = Date.new(2011, 4, 15)
           lg.patient_id = "98"
-          lg.result_type = "preliminary"
+          lg.result_type = "E" # prelim
 
-          lg.result("FOO", "FOO", "1.56", "g")
-          lg.result("BAR", "BAR", "3.45", "pmol/l")
+          lg.result("TSH", "TSH", "0,161", "mIU/L") do |r|
+            r.normal_range_text = ""
+          end
+          lg.result("FT3", "FT3", "4,81", "pmol/L") do |r|
+            r.normal_range_text = ""
+          end
+          lg.result("FT4", "FT4", "17,4", "pmol/L") do |r|
+            r.normal_range_text = ""
+          end
+        end
+        ldt.lg_report do |lg|
+          lg.request_id = "67890"
+          lg.requested_on = Date.new(2011, 6, 10)
+          lg.finished_on = Date.new(2011, 6, 10)
+          lg.patient_id = "99"
+          lg.result_type = "E" # prelim
+          lg.result("TSH", "TSH", "1,19", "mIU/L")
+          lg.result("FT3", "FT3", "4,85", "pmol/L")
+          lg.result("FT4", "FT4", "17,2", "pmol/L")
+          lg.result("TAK", "TAK", "<20,0", "IU/mL")
         end
       end
     end
 
     it "should have expected contents" do
-      expected = array_to_xdt %w(
-        80008220
-
-
-      )
-
-      assert_equal expected, @ldt.to_xdt
-
+      @expected = File.read("test/examples/ldt/e3.ldt")
+      assert_equal @expected, @ldt.to_xdt
     end
   end
 end
-
 
 describe "LG reports" do
   describe "parsing test results" do
@@ -67,16 +78,17 @@ describe "LG reports" do
   end
 end
 
-Dir["test/examples/ldt/**/*.ldt"].each do |f|
-
+Dir["test/examples/ldt/**/e2.ldt"].each do |f|
   describe "parsing example file #{f}" do
     before do
       @text = File.read(f).force_encoding("ASCII-8BIT")
       @ldt = Xdt::Ldt::Document.parse(StringScanner.new(@text))
     end
 
-    it "should serialize to itself" do
+    it "should have many lg_reports" do
+    end
 
+    it "should serialize to itself" do
       assert_equal @text, @ldt.to_xdt
     end
   end

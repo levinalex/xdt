@@ -92,17 +92,45 @@ module Xdt
       @elements << [field.id, field] if field
     end
 
-    def replace_field_value(id, *args)
-      self.class.with_field(id) do |method,klass|
-        field = klass.new(id, *args)
-
-        idx = @elements.index { |(i,v)| i == id }
-        if idx
-          @elements[idx] = [field.id, field]
-        else
-          append_field(field)
-        end
+    def replace_field(field)
+      idx = @elements.index { |(i,v)| i == field.id }
+      if idx
+        @elements[idx] = [field.id, field]
+      else
+        append_field(field)
       end
+    end
+
+    def replace_field_value(id, *args)
+      self.class.with_field(id) do |method, klass|
+        field = klass.new(id, *args)
+        replace_field(field)
+      end
+    end
+  end
+
+
+  class Section < Document
+    has_field "8000", nil, :method => nil
+    has_field "8100", nil, :method => nil
+
+    def self.parse(string_scanner)
+      # scan until the next block
+      rx = /
+        [^\A]
+      (?=
+       (?:\r\n\d{3}8000) |
+       \Z
+      )
+      /xm
+      block = string_scanner.scan_until(rx)
+
+      super(StringScanner.new(block))
+    end
+
+    def header(id)
+      yield Xdt::Field.new("8000", id)
+      yield Xdt::Field.new("8100", nil, 5) { "%05d" % self.length }
     end
 
   end

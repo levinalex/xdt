@@ -7,6 +7,7 @@ module Xdt
       has_field "8411", :name
       has_field "8420", :value
       has_field "8421", :unit
+      has_field "8460", :normal_range_text
 
       def id
         "8410"
@@ -38,9 +39,8 @@ module Xdt
       end
     end
 
-    class LgReport < Xdt::Document
+    class LgReport < Xdt::Section
       has_field "8410", :test_ident, :class => TestIdent
-      has_field "8000", nil, :method => nil
       has_field "8310", :request_id
       has_field "8301", :requested_on, :class => Xdt::Field::DateField
       has_field "8302", :finished_on, :class => Xdt::Field::DateField
@@ -57,21 +57,97 @@ module Xdt
 
       def each
         yield Xdt::Field.new("8000", "8202")
-        # yield Xdt::Field.new("8100", nil, 5) { "%05d" % self.length }
+        yield Xdt::Field.new("8100", nil, 5) { "%05d" % self.length }
         super
       end
 
-      def result(id, name, value, unit)
-        @elements << [:foo, TestIdent.new(id, name, value, unit)]
+      def result(id, name, value, unit, &block)
+        ident = TestIdent.new(id, name, value, unit, &block)
+        @elements << [:foo, ident]
+      end
+    end
+
+
+    class LHeader < Xdt::Section
+      has_field "8000", nil, :method => nil
+      has_field "8100", nil, :method => nil
+
+      has_field "9212", :ldt_version, :method => :replace_field
+      has_field "0201", :provider_id, :method => :replace_field
+      has_field "0203", :provider_name, :method => :replace_field
+      has_field "0204", :provider_group, :method => :replace_field
+      has_field "0205", :provider_street, :method => :replace_field
+      has_field "0206", :provider_address, :method => :replace_field
+      has_field "8300", :lab, :method => :replace_field
+      has_field "9106", :encoding, :method => :replace_field, :class => Xdt::Field::CharsetField
+      has_field "8312", :customer_id, :method => :replace_field
+      has_field "9103", :created_on, :method => :replace_field, :class => Xdt::Field::DateField
+
+      def id
+        "80008220"
+      end
+
+      def initialize(*args)
+        super() do
+          self.ldt_version = "LDT1001.02"
+          self.provider_id = "0000000"
+          self.provider_name = "Name"
+          self.provider_group = "kA"
+          self.provider_street = "Street 123"
+          self.provider_address = "12345 City"
+          self.lab = "LABOR"
+          self.encoding = "iso-8859-1"
+          self.customer_id = "1"
+          self.created_on = Date.new(2011,6,10)
+
+          yield self if block_given?
+        end
+      end
+
+      def each(&blk)
+        header("8220", &blk)
+        super
+      end
+    end
+
+    class LFooter < Xdt::Section
+      def initialize(&block)
+        super do
+          @length_callback = block
+        end
+      end
+
+      def initialize!
+        super
+        @length_callback = lambda { 0 }
+      end
+
+      def id
+        "80008221"
+      end
+
+      def each
+        yield Field.new("8000", "8221")
+        yield Field.new("8100", nil, 5) { "%05d" % self.length }
+        yield Field.new("9202", nil, 8) { "%08d" % @length_callback.call }
       end
 
     end
 
     class Document < Xdt::Document
-      has_field "80008202", :lg_report, :class => LgReport
+      has_field "80008202", :lg_reports, :class => LgReport
+      has_field "80008220", :l_header, :class => LHeader, :method => :replace_field
+      has_field "80008221", :l_footer, :class => LFooter, :method => nil
 
       def lg_reports
         select { |f| f.kind_of?(LgReport) }
+      end
+
+      def initialize
+        super do
+          self.l_header = 1
+          yield self if block_given?
+        end
       end
 
       def lg_report(*args)
@@ -81,33 +157,11 @@ module Xdt
         nil
       end
 
-      # def initialize
-      #   section("8220") do |s|
-      #     s.field("9211", "07/99")
-      #     # s.field("0201", "") # Arztnummer
-      #     s.field("0203", "Alexander")  # Arztname
-      #     s.field("0204", "Nuklearmediziner") # Arztgruppe
-      #     s.field("0205", "Schönhauser Allee 82") # Strasse
-      #     s.field("0206", "10439 Berlin") # PLZ Ort
-      #     s.field("8300", "LABOR Schoenhauser Allee 82")
-      #     # s.field("0101", "") # KBV Prüfnummer
-      #     s.field("9106", "3") # Charset (iso-8859-1)
-      #     s.field("8312", "1") # Kundennummer
-      #     s.field("9103", Date.today.strftime("%D%M%Y"))
-      #   end
-
-      #   super
-
-      #   section("8221") do |s|
-      #     s.field("9202", nil, 8) { self.length.to_s.rjust(8, "0") }
-      #   end
-
-
-      # end
-
-
+      def each
+        super
+        yield LFooter.new() { self.length }
+      end
     end
   end
-
 end
 
