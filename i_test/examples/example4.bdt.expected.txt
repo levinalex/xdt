@@ -1,0 +1,12 @@
+{
+  "patients": [{
+      "xref": "1",
+      "first_name": "Anton#",
+      "last_name": "Anton",
+      "gender": "male",
+      "zip": "28779",
+      "city": "Bremen",
+      "street": "Schwaneweder Str. 3b",
+      "born_on": "1960-12-01"
+    }]
+}

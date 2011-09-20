@@ -1,0 +1,7 @@
+{ "id": "6-1",
+  "given_name": "Heinrich",
+  "last_name": "Appeldorn",
+  "gender": "male",
+  "name_prefix": "",
+  "title": "",
+  "born_on": "1940-10-02" }
