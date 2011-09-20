@@ -20,9 +20,9 @@ module Xdt
           end
 
           define_method(name) do
-            first(id.to_s).value
+            f = first(id.to_s)
+            f && f.value
           end
-
         end
 
         nil

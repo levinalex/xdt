@@ -78,23 +78,6 @@ describe "LG reports" do
   end
 end
 
-Dir["test/examples/ldt/**/e2.ldt"].each do |f|
-  describe "parsing example file #{f}" do
-    before do
-      @text = File.read(f).force_encoding("ASCII-8BIT")
-      @ldt = Xdt::Ldt::Document.parse(StringScanner.new(@text))
-    end
-
-    it "should have many lg_reports" do
-    end
-
-    it "should serialize to itself" do
-      assert_equal @text, @ldt.to_xdt
-    end
-  end
-end
-
-
 describe "Ldt parsing" do
   before do
     @text = File.read("test/examples/ldt/e1.ldt", encoding: "ASCII-8BIT")

@@ -26,9 +26,8 @@ module Xdt
       (@length || formatted_value.length) + 9
     end
 
-
     def value
-      @value || @block.call
+      @value || (@block ? @block.call : "")
     end
 
     def formatted_value
