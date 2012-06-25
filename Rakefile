@@ -16,7 +16,7 @@ Spec::Rake::SpecTask.new do |t|
   t.warning = true
   t.spec_opts = %w(-c -f specdoc)
 end
-task :test => :spec
+#task :test => :spec
 
 
 task :cultivate do

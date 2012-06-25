@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["mail@levinalex.net"]
   s.executables = ["gdt2http"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = [".DS_Store", "History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/gdt2http", "lib/gdt/field_definitions.rb", "lib/gdt/field_handling.rb", "lib/gdt/parser.rb", "lib/gdt2http.rb", "lib/gdt_interface.rb", "lib/xdt.rb", "lib/xdt/ldt.rb", "lib/xdt/markup.rb", "lib/xdt/xdt_fields.rb", "lib/xdt/xdt_sections.rb", "spec/examples/BARCQPCN.001", "spec/gdt_field_definitions_spec.rb", "spec/gdt_parser_spec.rb", "spec/gdt_spec.rb", "spec/lg_report_spec.rb", "spec/xdt_spec.rb", "xdt.gemspec"]
+  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/gdt2http", "lib/gdt/field_definitions.rb", "lib/gdt/field_handling.rb", "lib/gdt/parser.rb", "lib/gdt2http.rb", "lib/gdt_interface.rb", "lib/xdt.rb", "lib/xdt/ldt.rb", "lib/xdt/markup.rb", "lib/xdt/xdt_fields.rb", "lib/xdt/xdt_sections.rb", "spec/examples/BARCQPCN.001", "spec/gdt_field_definitions_spec.rb", "spec/gdt_parser_spec.rb", "spec/gdt_spec.rb", "spec/lg_report_spec.rb", "spec/xdt_spec.rb", "xdt.gemspec"]
   s.has_rdoc = true
   s.homepage = %q{http://levinalex.net/src/xdt}
   s.rdoc_options = ["--main", "README.txt"]

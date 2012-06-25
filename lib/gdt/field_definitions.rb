@@ -29,6 +29,7 @@ module Gdt
     # bogus fields to suppress errors
     field 9901, :unknown, "unknown", (0..60), :alnum
     field 8402, :unknown, "unknown", (0..60), :alnum
+    field 9206, :unknown, "unknown", (0..60), :alnum
     
 
   end
