@@ -3,3 +3,8 @@
   - transparent use of .dotfiles for persistent configuration
 - method to persist authentication from patient/mwl backend
 - unit test CLI app
+
+GDT
+
+- charset support
+
