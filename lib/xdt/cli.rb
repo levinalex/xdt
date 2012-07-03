@@ -7,10 +7,10 @@ require 'rest-client'
 module Xdt
   module CLI
     class App < Thor
-      method_option :http, required: false,
-                           type: :string,
-                           banner: "URI",
-                           desc: "HTTP endpoint where patients are posted to"
+      method_option :uri, required: false,
+                          type: :string,
+                          banner: "URI",
+                          desc: "HTTP endpoint where patients are posted to."
       method_option :watchdog, type: :string,
                                lazy_default: true, banner: "URI",
                                desc: "HTTP uri that will be called periodically with diagnostic information"
@@ -32,13 +32,21 @@ module Xdt
         end
       end
 
+      def initialize(*args)
+        super
+        unless URI::HTTP === URI.parse(options[:uri].to_s)
+          warn "--uri must be a valid HTTP-URI  e.g. http://patient.example/api/mwl"
+          exit -1
+        end
+      end
+
 
       private
 
       def process_file(fname)
         data =  Xdt::Parser::RawDocument.open(fname).patient.to_hash
         puts data.to_json
-        RestClient.post "http://patient.dev/api/mwl", {:patient => data}, :content_type => :json, :accept => :json
+        RestClient.post options[:uri], {:patient => data}, :content_type => :json, :accept => :json
       rescue => e
         warn e
       end
