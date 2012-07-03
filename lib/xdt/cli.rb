@@ -34,6 +34,7 @@ module Xdt
 
       def initialize(*args)
         super
+
         unless URI::HTTP === URI.parse(options[:uri].to_s)
           warn "--uri must be a valid HTTP-URI  e.g. http://patient.example/api/mwl"
           exit -1
@@ -42,6 +43,7 @@ module Xdt
 
 
       private
+
 
       def process_file(fname)
         data =  Xdt::Parser::RawDocument.open(fname).patient.to_hash

@@ -1,0 +1,5 @@
+- use some other CLI framework instead of Thor
+  - better specify default arguments, check arguments (check URI-syntax)
+  - transparent use of .dotfiles for persistent configuration
+- method to persist authentication from patient/mwl backend
+- unit test CLI app
