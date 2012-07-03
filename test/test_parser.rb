@@ -19,7 +19,7 @@ describe 'xdt parser' do
     end
 
     it "should represent patient information as a hash" do
-      expected = { assigned_id: "02345",
+      expected = { id: "02345",
                    last_name: "Mustermann",
                    given_name: "Franz",
                    gender: :male,
@@ -35,7 +35,7 @@ describe 'xdt parser' do
     end
 
     it "should represent patient information as a hash" do
-      expected = { assigned_id: "02345",
+      expected = { id: "02345",
                    last_name: "Mustermann",
                    given_name: "Frank",
                    gender: :male,
