@@ -19,7 +19,7 @@ module Xdt
       def watch(directory)
         queue = SizedQueue.new(1)
 
-        watcher = DirectoryWatcher.new(directory, glob: '*', scanner: :rev, interval: 1, stable: 2)
+        watcher = DirectoryWatcher.new(directory, glob: '*', interval: 1, stable: 2)
         watcher.add_observer do |*events|
           stable_files = events.select { |e| e.type == :stable }.map(&:path)
           stable_files.each { |f| queue.push(f) }
