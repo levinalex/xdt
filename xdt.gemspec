@@ -16,4 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Xdt::VERSION
 
   gem.add_dependency "thor"
+  gem.add_dependency "rake"
+
+  gem.add_development_dependency "minitest"
 end
