@@ -17,6 +17,9 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "thor"
   gem.add_dependency "rake"
+  gem.add_dependency "directory_watcher"
+  gem.add_dependency "rev"
+  gem.add_dependency "rest-client"
 
   gem.add_development_dependency "minitest"
 end
