@@ -1,0 +1,37 @@
+01380006310
+014810000962
+0198315PRAX_EDV
+0148316LZBD_SYS
+014921802.10
+014300002345
+0193101Mustermann
+0143102Franz
+017310301101945
+01031101
+0123622178
+0123632079
+0158402BDM01
+017620023101998
+0346220Dies ist ein zweizeiliger
+0416220Befund zur 24h-Blutdruckmessung.
+0566227Anmerkungen zu einer Langzeit-Blutdruckmessung.
+0506228Kurzzusammenfassung 24 h Blutdruckmessung
+0606228--------------------------------------------------
+0606228          Tagphase       Nachtphase   proz. Abfall
+0596228       06:00-22:00      22:00-06:00     Tag/Nacht
+0606228Ps[mmHg]       143              134           -6 %
+0606228Pd[mmHg]        92               92            0 %
+0606228HF[P/min]       71               70           -1 %
+0178410SYSMXTG
+0298411Systole max Tagphase
+0128420142
+0138421mmHg
+017843223101998
+0158439163400
+0128462140
+0178410SYSMNTG
+0298411Systole min Tagphase
+0128420112
+0138421mmHg
+017843224101998
+0158439031200
