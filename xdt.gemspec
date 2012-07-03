@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "directory_watcher"
   gem.add_dependency "rev"
   gem.add_dependency "rest-client"
+  gem.add_dependency "json"
 
   gem.add_development_dependency "minitest"
 end
