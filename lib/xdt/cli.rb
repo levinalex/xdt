@@ -1,55 +1,59 @@
-require 'thor'
+require 'gli'
 require 'json'
 require 'thread'
 require 'directory_watcher'
 require 'rest-client'
 
+
 module Xdt
-  module CLI
-    class App < Thor
-      method_option :uri, required: false,
-                          type: :string,
-                          banner: "URI",
-                          desc: "HTTP endpoint where patients are posted to."
-      method_option :watchdog, type: :string,
-                               lazy_default: true, banner: "URI",
-                               desc: "HTTP uri that will be called periodically with diagnostic information"
-      desc "watch", "watch a directory for GDT files and post extracted patient information to the given HTTP endpoint"
-
-      def watch(directory)
-        queue = SizedQueue.new(1)
-
+  class Watcher
+    def initialize(dirs)
+      @queue = SizedQueue.new(1)
+      dirs.each do |directory|
         watcher = DirectoryWatcher.new(directory, glob: '*', interval: 1, stable: 2)
         watcher.add_observer do |*events|
           stable_files = events.select { |e| e.type == :stable }.map(&:path)
-          stable_files.each { |f| queue.push(f) }
+          stable_files.each { |f| @queue.push(f) }
         end
         watcher.start
-
-        # force file processing to occur on the main thread
-        while x = queue.pop do
-          process_file(x)
-        end
-      end
-
-
-      private
-
-      def process_file(fname)
-        data =  Xdt::Parser::RawDocument.open(fname).patient.to_hash
-        if options[:uri]
-          RestClient.post options[:uri], {:patient => data}, :content_type => :json, :accept => :json
-        else
-          puts data.to_json
-        end
-      rescue => e
-        warn "error processing #{fname}"
-        warn e
       end
     end
 
-    def self.with_friendly_errors
-      yield
+    def watch!(&block)
+      while fname = @queue.pop do
+        process_file(fname, &block)
+      end
+    end
+
+    def process_file(fname, &block)
+      data =  Xdt::Parser::RawDocument.open(fname).patient.to_hash
+      yield data
+    rescue => e
+      warn "error processing #{fname}"
+      warn e
     end
   end
+
+
+  module CLI
+    extend GLI::App
+
+    program_desc "XDT parser"
+    version Xdt::VERSION
+
+    desc "watch a directory for GDT files and post extracted patient information to the given HTTP endpoint"
+    arg_name "directory"
+    command :watch do |c|
+      c.flag "uri", type: String, desc: "HTTP endpoint where patients are posted to", arg_name: "URI"
+
+      c.action do |global_options,options,args|
+        help_now!('directory is required') if args.empty?
+        Xdt::Watcher.new(args).watch! do |patient_data|
+          puts patient_data.to_json
+          RestClient.post options[:uri], {:patient => patient_data, :ua => Xdt.version}, :content_type => :json, :accept => :json
+        end
+      end
+    end
+  end
+
 end

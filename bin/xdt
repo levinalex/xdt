@@ -3,5 +3,4 @@
 require 'xdt'
 require 'xdt/cli'
 
-
-Xdt::CLI.with_friendly_errors { Xdt::CLI::App.start }
+exit Xdt::CLI.run(ARGV)
