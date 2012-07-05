@@ -48,7 +48,7 @@ module Xdt
       end
 
       def self.open(fname)
-        new(File.open(fname, encoding: "iso-8859-1").read)
+        new(File.open(fname, encoding: "ISO-8859-1").read)
       end
     end
   end

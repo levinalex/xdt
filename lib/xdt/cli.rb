@@ -32,24 +32,18 @@ module Xdt
         end
       end
 
-      def initialize(*args)
-        super
-
-        unless URI::HTTP === URI.parse(options[:uri].to_s)
-          warn "--uri must be a valid HTTP-URI  e.g. http://patient.example/api/mwl"
-          exit -1
-        end
-      end
-
 
       private
 
-
       def process_file(fname)
         data =  Xdt::Parser::RawDocument.open(fname).patient.to_hash
-        puts data.to_json
-        RestClient.post options[:uri], {:patient => data}, :content_type => :json, :accept => :json
+        if options[:uri]
+          RestClient.post options[:uri], {:patient => data}, :content_type => :json, :accept => :json
+        else
+          puts data.to_json
+        end
       rescue => e
+        warn "error processing #{fname}"
         warn e
       end
     end
