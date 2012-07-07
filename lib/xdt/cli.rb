@@ -42,7 +42,6 @@ module Xdt
 
   module CLI
     extend GLI::App
-
     program_desc "XDT parser"
     version Xdt::VERSION
 
@@ -77,7 +76,7 @@ module Xdt
         help_now!('directory is required') if args.empty?
         Xdt::Watcher.new(args).watch! do |patient_data|
           puts patient_data.to_json
-          opts = { uuid: global_options[:config]["uuid"], hostname: Socket.gethostname, program: Xdt.version }
+          opts = { uuid: global_options[:config]["uuid"], hostname: Socket.gethostname, name: Xdt.version }
 
           RestClient.post options[:uri], {:patient => patient_data, :about => opts }, :content_type => :json, :accept => :json
         end

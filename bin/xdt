@@ -3,4 +3,4 @@
 require 'xdt'
 require 'xdt/cli'
 
-exit Xdt::CLI.run(ARGV)
+exit Xdt::CLI.run(ARGV.dup)
