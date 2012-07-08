@@ -2,9 +2,10 @@ module Xdt
   module Parser
 
     class XdtRow
-      def initialize(id, value, opts = {})
+      def initialize(id, value = nil, opts = {}, &block)
         @id = to_id(id)
-        @value = value
+        @value = value || block
+        @length = opts[:length]
       end
 
       def has_id?(id)
@@ -12,15 +13,19 @@ module Xdt
       end
 
       def value
-        @value
+        if @value.respond_to?(:to_proc)
+          @value.call
+        else
+          @value
+        end
       end
 
-      def line_length
-        @value.length + 9
+      def xdt_length
+        (@length || value.length) + 9
       end
 
       def to_xdt
-        "#{"%03i" % line_length}#{to_id(@id)}#{@value}\x0D\x0A"
+        "#{"%03i" % xdt_length}#{to_id(@id)}#{value}\x0D\x0A"
       end
 
       private
@@ -42,6 +47,7 @@ module Xdt
 
       def initialize
         @data = []
+        yield self if block_given?
       end
 
       def first(code)
@@ -51,7 +57,7 @@ module Xdt
 
       def initialize_from_text(text)
         @data = text.scan(RX).map do |len,id,data|
-          XdtRow.new(id, data, length: len)
+          XdtRow.new(id, data, length: (len.to_i - 9))
         end
       end
 
@@ -59,6 +65,9 @@ module Xdt
         Xdt::Patient.from_document(self)
       end
 
+      def xdt_length
+        @data.map(&:xdt_length).inject { |a,b| a+b }
+      end
 
       def to_xdt
         @data.map(&:to_xdt).join

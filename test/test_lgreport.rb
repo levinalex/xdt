@@ -37,7 +37,7 @@ describe 'ldt generator' do
   end
 
   it "should have generated correct data" do
-    assert_equal @expected, @lg.to_s
+    assert_equal @expected, @lg.to_xdt
   end
 
 end
