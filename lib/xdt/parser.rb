@@ -20,7 +20,7 @@ module Xdt
       end
 
       def to_xdt
-        "#{"%03i" % line_length}#{to_id(@id)}#{@value}\n"
+        "#{"%03i" % line_length}#{to_id(@id)}#{@value}\x0D\x0A"
       end
 
       private
