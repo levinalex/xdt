@@ -8,7 +8,7 @@ InstalledFiles
 _yardoc
 coverage
 doc/
-fixtures
+/fixtures
 lib/bundler/man
 out
 pkg

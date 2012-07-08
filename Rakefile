@@ -1,7 +1,6 @@
 #!/usr/bin/env rake
 require "bundler/gem_tasks"
 
-
 $LOAD_PATH.unshift './lib'
 require 'xdt'
 
