@@ -15,6 +15,13 @@ module Xdt
         @value
       end
 
+      def line_length
+        @value.length + 9
+      end
+
+      def to_xdt
+        "#{"%03i" % line_length}#{to_id(@id)}#{@value}\n"
+      end
 
       private
 
@@ -32,12 +39,17 @@ module Xdt
              \r?\n?$    # match data until end of line or EOF
            /x
 
+
+      def initialize
+        @data = []
+      end
+
       def first(code)
         @data.detect { |row| row.has_id?(code) }
       end
       alias_method :[], :first
 
-      def initialize(text)
+      def initialize_from_text(text)
         @data = text.scan(RX).map do |len,id,data|
           XdtRow.new(id, data, length: len)
         end
@@ -47,8 +59,15 @@ module Xdt
         Xdt::Patient.from_document(self)
       end
 
+
+      def to_xdt
+        @data.map(&:to_xdt).join
+      end
+
       def self.open(fname)
-        new(File.open(fname, encoding: "ISO-8859-1").read)
+        doc = allocate
+        doc.initialize_from_text(File.open(fname, encoding: "ISO-8859-1").read)
+        doc
       end
     end
   end

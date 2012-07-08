@@ -3,7 +3,8 @@ require 'helper'
 describe 'xdt parser' do
   describe "parsing example files" do
     before do
-      @document = Xdt::Parser::RawDocument.open("test/examples/gdt2_1-1.txt")
+      @path = "test/examples/gdt2_1-1.txt"
+      @document = Xdt::Parser::RawDocument.open(@path)
     end
 
     it "should have correct type" do
@@ -26,6 +27,10 @@ describe 'xdt parser' do
                    born_on: Date.new(1945,10,01) }
 
       assert_equal expected, @document.patient.to_hash
+    end
+
+    it "should be convertible back to string" do
+      assert_equal File.read(@path), @document.to_xdt
     end
   end
 
