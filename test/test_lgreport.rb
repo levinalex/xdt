@@ -16,7 +16,7 @@ describe 'ldt generator' do
         # s.field("0101", "") # KBV Prüfnummer
         s.field("9106", "3") # Charset (iso-8859-1)
         s.field("8312", "1") # Kundennummer
-        s.field("9103", Date.today.strftime("%D%M%Y"))
+        s.field("9103", "31122012")
       end
       lg.section("8202") do |s|
         s.field("8310", "12345") # Anforderungs-ID
