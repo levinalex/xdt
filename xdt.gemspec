@@ -4,8 +4,9 @@ require File.expand_path('../lib/xdt/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Levin Alexander"]
   gem.email         = ["mail@levinalex.net"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = "read/write GDT/LDT files"
+  gem.summary       = "read/write GDT/LDT files"
+
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
