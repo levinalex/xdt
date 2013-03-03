@@ -1,6 +1,57 @@
 #!/usr/bin/env ruby
 
 require 'xdt'
+require 'main'
 require 'xdt/cli'
 
-exit Xdt::CLI.run(ARGV.dup)
+Main do
+  mode 'watch' do
+    description "watch a directory for GDT files and post extracted patient information to the given HTTP endpoint"
+    version Xdt::VERSION
+
+    argument :dir do
+      arity -2
+      cast :pathname
+      validate { |dir| dir.directory? }
+    end
+
+    option :uri do
+      argument_required
+      arity 1
+      description "http endpoint for patient information"
+    end
+
+    option :output do
+      cast :output
+      argument_required
+      default '-'
+    end
+
+    option :delete do
+      cast :boolean
+      default false
+      argument :optional
+      description "delete file after processing"
+    end
+
+    def run()
+      Xdt::Watcher.new(params['dir'].values).watch! do |patient_data, fname|
+        params[:output].value.puts patient_data.to_json
+        opts = { hostname: Socket.gethostname, name: Xdt.version }
+
+        if uri = params['uri'].value
+          RestClient.post(
+            params[:uri].value,
+            {:patient => patient_data, :about => opts },
+            :content_type => :json, :accept => :json)
+        end
+
+        if params['delete'].value
+          File.delete(fname)
+        end
+      end
+    end
+  end
+end
+
+

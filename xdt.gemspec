@@ -16,7 +16,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Xdt::VERSION
 
-  gem.add_dependency "gli", "~> 2.0.0.rc4"
+  # gem.add_dependency "gli", "~> 2.0.0.rc4"
+  gem.add_dependency "main"
   gem.add_dependency "rake"
   gem.add_dependency "directory_watcher"
   gem.add_dependency "rest-client"
