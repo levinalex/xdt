@@ -1,6 +1,5 @@
 module Xdt
   module Parser
-
     class XdtRow
       def initialize(id, value = nil, opts = {}, &block)
         @id = to_id(id)

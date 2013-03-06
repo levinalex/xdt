@@ -3,12 +3,13 @@
 .bundle
 .config
 .yardoc
+/fixtures
 Gemfile.lock
 InstalledFiles
 _yardoc
 coverage
 doc/
-/fixtures
+gdt/
 lib/bundler/man
 out
 pkg

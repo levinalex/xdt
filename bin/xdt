@@ -34,7 +34,7 @@ Main do
       description "delete file after processing"
     end
 
-    def run()
+    def run
       Xdt::Watcher.new(params['dir'].values).watch! do |patient_data, fname|
         params[:output].value.puts patient_data.to_json
         opts = { hostname: Socket.gethostname, name: Xdt.version }
