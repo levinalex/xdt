@@ -35,20 +35,9 @@ Main do
     end
 
     def run
-      Xdt::Watcher.new(params['dir'].values).watch! do |patient_data, fname|
-        params[:output].value.puts patient_data.to_json
-        opts = { hostname: Socket.gethostname, name: Xdt.version }
-
-        if uri = params['uri'].value
-          RestClient.post(
-            params[:uri].value,
-            {:patient => patient_data, :about => opts },
-            :content_type => :json, :accept => :json)
-        end
-
-        if params['delete'].value
-          File.delete(fname)
-        end
+      handler = Xdt::XdtHandler.new(params)
+      Xdt::Watcher.new(params['dir'].values).watch! do |fname|
+        handler.handle(fname)
       end
     end
   end

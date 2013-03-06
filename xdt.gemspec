@@ -19,8 +19,10 @@ Gem::Specification.new do |gem|
   gem.add_dependency "main"
   gem.add_dependency "rake"
   gem.add_dependency "directory_watcher"
+  gem.add_dependency "httparty"
   gem.add_dependency "rest-client"
   gem.add_dependency "json"
 
   gem.add_development_dependency "minitest"
+  gem.add_development_dependency "webmock", ">= 1.11.0"
 end
