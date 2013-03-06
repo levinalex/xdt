@@ -19,7 +19,10 @@ describe 'http' do
                                    "last_name" => "Mustermann",
                                    "given_name" => "Franz",
                                    "born_on" => "1945-10-01",
-                                   "gender" => "male" }}).
+                                   "gender" => "male" }},
+           :headers => { 'Accept' => 'application/json',
+                         'Content-Type' => 'application/json' }
+          ).
       to_return(:status => 200, :body => "", :headers => {})
 
     @handler.handle(@fname)

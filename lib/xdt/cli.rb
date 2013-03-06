@@ -49,7 +49,7 @@ module Xdt
       opts = { hostname: Socket.gethostname, name: Xdt.version }
 
       if @params[:uri].value
-        RestClient.post( @params[:uri].value, {:patient => data, :about => opts }, :content_type => :json, :accept => :json)
+        RestClient.post( @params[:uri].value, {:patient => data, :about => opts }.to_json, :content_type => :json, :accept => :json)
       end
 
       if @params['delete'].value
