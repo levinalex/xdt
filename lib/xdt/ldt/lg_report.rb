@@ -17,7 +17,7 @@ module Xdt
           # s.field("0101", "") # KBV Prüfnummer
           s.field("9106", "3") # Charset (iso-8859-1)
           s.field("8312", "1") # Kundennummer
-          s.field("9103", Date.today.strftime("%D%M%Y"))
+          s.field("9103", Date.today.strftime("%d%m%Y"))
         end
 
         super
